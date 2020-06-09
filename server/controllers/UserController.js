@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 class UserController {
 
-    static register(req,res) {
+    static register(req,res,next) {
         const user = {
             email: req.body.email,
             password: req.body.password
@@ -19,17 +19,17 @@ class UserController {
         .catch(err => {
             
             if(err.errors) {
-                res.status(400).json({
-                    msg: err.errors[0].message
-                })
+                const err_data = err.errors.map(el => el.message)
+                res.status(400).json({ msg: err_data })
+
+            } else {
+                next({ str_code: 'INTERNAL_SERVER_ERROR' })
             }
-            res.status(500).json({
-                msg: 'Internal Server Error!'
-            })
+            
         })
     }
 
-    static login(req,res) {
+    static login(req,res,next) {
         const user = {
             email: req.body.email,
             password: req.body.password
@@ -53,20 +53,16 @@ class UserController {
                         msg: `You're logged in`
                     })
                 } else {
-                    res.status(400).json({
-                        msg: `Incorrect Password`
-                    })
+                    next({ str_code: 'INCORRECT_PASSWORD' })
                 }
+
             } else {
-                res.status(400).json({
-                    msg: `Email Not found`
-                })
+                next({ str_code: 'EMAIL_NOT_FOUND' })
+
             }
         })
         .catch(err => {
-            res.status(500).json({
-                msg: 'Internal Server Error!'
-            })
+            next({ str_code: 'INTERNAL_SERVER_ERROR' })
         })
     }
 }

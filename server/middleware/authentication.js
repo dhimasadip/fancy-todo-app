@@ -15,17 +15,16 @@ module.exports = (req,res,next) => {
         .then(data => {
             if (data) {
                 next()
+
             } else {
-                res.status(404).json({msg: 'User not found'})
+                next({ str_code: 'USER_NOT_FOUND' })
             }   
         })
         .catch(err => {
-            // res.status(500).json({err: err, msg: 'Internal server error'})
-            next({str_code: 'INTERNAL_SERVER_ERROR'})
+            next({ str_code: 'INTERNAL_SERVER_ERROR' })
         })
     } catch {
-        // res.status(404).json({ msg: 'Invalid Token'})
-        next({str_code: 'INVALID_TOKEN'})
+        next({ str_code: 'INVALID_TOKEN' })
 
     }
     

@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken')
 
 class TodoController {
 
-    static list(req,res) {
-        
+    static list(req,res,next) {
         
         Todo.findAll({
             include: User,
@@ -16,13 +15,11 @@ class TodoController {
             res.status(200).json({data: data})
         })
         .catch(err => {
-            res.status(400).json({err: err})
+            next({ str_code: 'INTERNAL_SERVER_ERROR' })
         })
     }
 
-    static add(req,res) {
-        
-
+    static add(req,res,next) {
         const todo = {
             title: req.body.title,
             description: req.body.description,
@@ -38,11 +35,11 @@ class TodoController {
             res.status(201).json({msg: `Successfully create todo`})
         })
         .catch(err => {
-            res.status(400).json({err: err})
+            next({ str_code: 'INTERNAL_SERVER_ERROR' })
         })
     }
 
-    static edit(req,res) {
+    static edit(req,res,next) {
         const todo = {
             title: req.body.title,
             description: req.body.description,
@@ -59,11 +56,11 @@ class TodoController {
             res.status(200).json({msg: `Successfully update todo`})
         })
         .catch(err => {
-            res.status(400).json({err: err})
+            next({ str_code: 'INTERNAL_SERVER_ERROR' })
         })
     }
 
-    static delete(req,res) {
+    static delete(req,res,next) {
 
         Todo.destroy({
             where: {
@@ -74,7 +71,7 @@ class TodoController {
             res.status(200).json({msg: `Successfully delete todo`})
         })
         .catch(err => {
-            res.status(500).json({err: err})
+            next({ str_code: 'INTERNAL_SERVER_ERROR' })
         })
     }
     

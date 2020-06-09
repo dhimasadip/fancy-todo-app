@@ -11,8 +11,27 @@ module.exports = (err,req,res,next) => {
             err_code = 500
             err_msg = 'Internal server error'
             break
-        default:
-
+        case 'USER_NOT_FOUND':
+            err_code = 404
+            err_msg = 'User not found'
+            break
+        case 'UNAUTHORIZED':
+            err_code = 403
+            err_msg = 'Unauthorized'
+            break
+        case 'TODO_NOT_FOUND':
+            err_code = 404
+            err_msg = 'Todo not found'
+            break
+        case 'EMAIL_NOT_FOUND':
+            err_code = 404
+            err_msg = 'Email not found'
+            break
+        case 'INCORRECT_PASSWORD':
+            err_code = 404
+            err_msg = 'Incorrect Password'
+            break
+            
     }
 
     res.status(err_code).json({

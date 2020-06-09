@@ -7,15 +7,16 @@ module.exports = (req,res,next) => {
     Todo.findByPk(id)
     .then(data => {
         if (!data) {
-            res.status(404).json({msg: `Todo not found`})
+            next({ str_code: 'TODO_NOT_FOUND' })
+
         } else if (data.UserId != req.user.id) {
-            res.status(403).json({msg: `You're not authorized!`})
+            next({ str_code: 'UNAUTHORIZED' })
+
         } else {
             next()
         }
     })
     .catch(err => {
-        res.status(500).json({err: err, msg: `Internal server error`})
-        
+        next({ str_code: 'INTERNAL_SERVER_ERROR' })
     })
 }
