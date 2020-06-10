@@ -1,5 +1,4 @@
 const { Todo, User } = require('../models')
-const jwt = require('jsonwebtoken')
 
 class TodoController {
 
@@ -40,12 +39,23 @@ class TodoController {
     }
 
     static edit(req,res,next) {
+        Todo.findByPk(req.params.id)
+        .then(data => {
+            res.status(200).json({data})
+        })
+        .catch(err => {
+            next({ str_code: 'INTERNAL_SERVER_ERROR' })
+        })
+    }
+
+    static editHandler(req,res,next) {
         const todo = {
             title: req.body.title,
             description: req.body.description,
             status: req.body.status,
-            due_date: req.body.due_date
+            due_date: new Date(req.body.due_date)
         }
+
 
         Todo.update(todo, {
             where: {

@@ -12,7 +12,7 @@ class UserController {
 
         User.create(user)
         .then(data => {
-            res.status(201).json({
+            return res.status(201).json({
                 msg: 'Successfully created new user.'
             })
         })
@@ -20,7 +20,7 @@ class UserController {
             
             if(err.errors) {
                 const err_data = err.errors.map(el => el.message)
-                res.status(400).json({ msg: err_data })
+                return res.status(400).json({ msg: err_data })
 
             } else {
                 next({ str_code: 'INTERNAL_SERVER_ERROR' })
@@ -34,7 +34,7 @@ class UserController {
             email: req.body.email,
             password: req.body.password
         }
-
+       
         User.findOne({
             where: { email: user.email}
         })
@@ -45,12 +45,11 @@ class UserController {
                         id: data.id,
                         email: data.email
                     }, process.env.KEY)
-
-                    req.headers.access_token = access_token
                     
-                    res.status(200).json({
-                        access_token,
-                        msg: `You're logged in`
+                    return res.status(200).json({
+                        id: data.id,
+                        email: data.email,
+                        access_token
                     })
                 } else {
                     next({ str_code: 'INCORRECT_PASSWORD' })

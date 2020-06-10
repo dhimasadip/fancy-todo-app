@@ -4,8 +4,8 @@ const { User } = require('../models')
 module.exports = (req,res,next) => {
 
     const { access_token } = req.headers
-
-    if(!access_token) res.status(404).json({msg: 'Token Not found'})
+    
+    if(!access_token) return res.status(404).json({msg: 'Token Not found'})
 
     try {
         const decode = jwt.verify(access_token, process.env.KEY)
