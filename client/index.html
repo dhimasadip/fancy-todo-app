@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="182299826007-techg2jd6ev6jn9lj24olua2gunfe0sd.apps.googleusercontent.com">
     <title>Fancy Todo</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="./resources/css/style.css">
@@ -11,7 +12,7 @@
     
     <header class="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Home</a>
+            <a class="navbar-brand" onclick="authentication()" href="#">Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,20 +25,23 @@
                     Todo
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">List Todo</a>
+                    <a class="dropdown-item" onclick="authentication()" href="#">List Todo</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" onclick="addTodoPage()" href="#">Add Todo</a>
                   </div>
                 </li>
-
+              </ul>
+              <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       User
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="navbarDropdown">
                       <!-- <a class="dropdown-item" href="#">Login</a> -->
                       <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
                       <div class="dropdown-divider"></div>
+                      <a class="dropdown-item disabled" id="user-email" disabled></a>
+                      <!-- <div class="dropdown-item" id="user-email"></div> -->
                       <!-- <a class="dropdown-item" href="#">Register</a> -->
                     </div>
                   </li>
@@ -48,185 +52,193 @@
     </header>
 
     <section class="section-login">
-        <div class="d-flex flex-column align-items-center justify-content-center h-100 pt-5 container w-50">
-            <div class="alert alert-danger alert-dismissible fade show mt-5" role="alert">
-                You should check in on some of those fields below.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-    
-            
-            <form onsubmit="login(event)" id="form-login" class="w-50 h-25">
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" name="email" class="form-control" id="email_login" aria-describedby="emailHelp">
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" name="password" class="form-control" id="password_login">
-                </div>
-              
-                <div class="d-flex justify-content-center align-items-center flex-column">
-                    <button type="submit" class="btn btn-primary w-50 mb-2">Login</button>
-                    <small>Don't have an account? <a onclick="registerPage()" href="#">Register</a> here</small>
-                </div>
-              </form>
+      <div class="d-flex flex-column align-items-center justify-content-center h-100 pt-5 container w-50">
+        <div class="alert-login">
+
         </div>
+
+        <form onsubmit="login(event)" id="form-login" class="w-50 h-25">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" id="email_login" aria-describedby="emailHelp">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" id="password_login">
+          </div>
+
+
+        
+          <div class="d-flex justify-content-center align-items-center flex-column">
+            <div id="btn-login">
+              <button type="submit" style="width: 120px;" class="btn btn-primary">Sign in</button>
+            </div>
+            
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <small class="mt-2">Don't have an account? <a onclick="registerPage()" href="#">Register</a> here</small>
+          </div>
+        </form>
+            
+      </div>
         
     </section>
 
     <section class="section-register">
-        <div class="d-flex flex-column align-items-center justify-content-center h-100 pt-5 container w-50">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                You should check in on some of those fields below.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-    
-            <form onsubmit="register(event)" class="w-50 h-25">
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" name="email" class="form-control" id="email_register" aria-describedby="emailHelp">
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" name="password" class="form-control" id="password_register">
-                </div>
-                <div class="form-group">
-                    <label for="confirm_password">Confirm Password</label>
-                    <input type="password" name="confirm_password" class="form-control" id="confirm_password_register">
-                  </div>
-              
-                  <div class="d-flex justify-content-center align-items-center flex-column">
-                    <button type="submit" class="btn btn-primary w-50 mb-2">Sign Up</button>
-                    <small>Have an account? <a onclick="loginPage()" href="#">Login</a> here</small>
-                </div>
-              </form>
+      <div class="d-flex flex-column align-items-center justify-content-center h-100 pt-5 container w-50">
+        <div class="alert-register">
+
         </div>
+        
+
+        <form onsubmit="register(event)" class="w-50 h-25">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" name="email" class="form-control" id="email_register" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" class="form-control" id="password_register">
+            </div>
+            <div class="form-group">
+              <label for="confirm_password">Confirm Password</label>
+              <input type="password" name="confirm_password" class="form-control" id="confirm_password_register">
+            </div>
+          
+            <div class="d-flex justify-content-center align-items-center flex-column">
+              <button type="submit" class="btn btn-primary w-50 mb-2">Sign Up</button>
+              <small>Have an account? <a onclick="loginPage()" href="#">Login</a> here</small>
+            </div>
+        </form>
+      </div>
         
     </section>
 
     <section class="section-add-todo container w-50 mt-4 mb-2">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            You should check in on some of those fields below.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+      <div class="alert-add" role="alert">
+            
+      </div>
+
+      <div class="add-form-container border shadow rounded p-4 mb-4">
 
         <h2 class="text-center">Add Todo</h2>
         <form onsubmit="addTodo(event)">
-            <div class="form-group">
-              <label for="title">Title :</label>
-              <input type="text" name="title" class="form-control" id="title">
+          <div class="form-group">
+            <label for="title">Title :</label>
+            <input type="text" name="title" class="form-control" id="title">
+          </div>
+          <div class="form-group">
+            <label for="description">Description :</label>
+            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+          </div>
+  
+          <div class="form-group">
+            <label >Status :</label><br>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="status" value="done"> Done
+              </label>
             </div>
-            <div class="form-group">
-                <label for="description">Description :</label>
-                <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="status" value="process"> On Process
+              </label>
             </div>
-
-            <div class="form-group">
-                <label >Status :</label><br>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="status" value="done"> Done
-                    </label>
-                </div>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="status" value="process"> On Process
-                    </label>
-                </div>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="status" value="waiting"> Waiting
-                    </label>
-                </div>
-              </div>
-              
-            <div class="form-group">
-                <label for="due_date">Due Date :</label>
-                <input type="date" name="due_date" id="due_date" class="form-control">
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="status" value="waiting"> Waiting
+              </label>
             </div>
-
-            <div class="d-flex justify-content-center align-items-center flex-column">
-                <button type="submit" class="btn btn-primary w-50 mb-2">Submit</button>
-                <small>please make sure you fill the fields correctly</small>
-            </div>
-          </form>
+          </div>
+            
+          <div class="form-group">
+            <label for="due_date">Due Date :</label>
+            <input type="date" name="due_date" id="due_date" class="form-control">
+          </div>
+  
+          <div class="d-flex justify-content-center align-items-center flex-column">
+            <button type="submit" class="btn btn-primary w-50 mb-2">Submit</button>
+            <small>please make sure you fill the fields correctly</small>
+          </div>
+        </form>
+      </div>
     </section>
 
+    <section class="section-edit-todo container w-50 mt-4 mb-4">
+      <div class="alert-edit">
+        
+      </div>
 
-    <section class="section-edit-todo container w-50 mt-4 mb-2">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            You should check in on some of those fields below.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+      <div class="edit-form-container border shadow rounded p-4 mb-3">
 
-        <h2 class="text-center">Edit Todo</h2>
+        <h2 class="text-center text-secondary">Edit Todo</h2>
         <form onsubmit="editTodo(event)">
-            <div class="form-group">
-              <label for="title">Title :</label>
-              <input type="text" name="title" class="form-control" id="title_edit">
+          <div class="form-group">
+            <label for="title">Title :</label>
+            <input type="text" name="title" class="form-control" id="title_edit">
+          </div>
+  
+          <div class="form-group">
+            <label for="description">Description :</label>
+            <textarea class="form-control" name="description" id="description_edit" rows="3"></textarea>
+          </div>
+  
+          <div class="form-group">
+            <label >Status :</label><br>
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="status_edit" id="status_done" value="done"> Done
+              </label>
             </div>
-            <div class="form-group">
-                <label for="description">Description :</label>
-                <textarea class="form-control" name="description" id="description_edit" rows="3"></textarea>
+  
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="status_edit" id="status_process" value="process"> On Process
+              </label>      
             </div>
-
-            <div class="form-group">
-                <label >Status :</label><br>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="status_edit" id="status_done" value="done"> Done
-                    </label>
-                </div>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="status_edit" id="status_process" value="process"> On Process
-                    </label>
-                </div>
-                <div class="form-check-inline">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="status_edit" id="status_waiting" value="waiting"> Waiting
-                    </label>
-                </div>
-              </div>
-              
-            <div class="form-group">
-                <label for="due_date">Due Date :</label>
-                <input type="date" name="due_date" id="due_date_edit" value="2022-01-02" class="form-control">
+  
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="status_edit" id="status_waiting" value="waiting"> Waiting
+              </label>
             </div>
-
-            <div class="d-flex justify-content-center align-items-center flex-column">
-                <button type="submit" class="btn btn-primary w-50 mb-2">Submit</button>
-                <small>please make sure you fill the fields correctly</small>
-            </div>
-          </form>
+  
+          </div>
+                
+          <div class="form-group">
+            <label for="due_date">Due Date :</label>
+            <input type="date" name="due_date" id="due_date_edit" value="2022-01-02" class="form-control">
+          </div>
+  
+          <div class="d-flex justify-content-center align-items-center flex-column">
+            <button type="submit" class="btn btn-primary w-50 mb-2">Submit</button>
+            <small>please make sure you fill the fields correctly</small>
+          </div>
+        </form>
+      </div>
     </section>
 
     <section class="section-list-todo container mt-4 mb-2">
 
-        <table class="table table-hover">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Todo</th>
-                <th scope="col">Details</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody id="table-body">
-              
-            </tbody>
-          </table>
+      <div class="heading">
+        
+      </div>
+
+      <div class="alert-list">
+
+      </div>
+
+      <div class="confirmation">
+    
+      </div>
+
+      <div id="content" class="row row-cols-1 row-cols-md-2">
+        
+      </div>
+
+      
     </section>
 
-    
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>

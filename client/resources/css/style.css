@@ -1,10 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+* {
+    font-family: 'Rubik', sans-serif;
+    /* letter-spacing: 1px; */
+}
 
 .section-login {
     background-image: url('./img/todo.jpg');
     background-size: 100% 110%;
     background-position: center;
     height: 100vh;
-    width: 100%;
+    
     background-repeat: no-repeat;
 }
 
@@ -16,4 +22,30 @@
     height: 100vh;
     width: 100%;
     background-repeat: no-repeat;
+}
+
+#btn-login:after {
+    content: " ";
+    display: block;
+    background-color: #8d8d8d;
+    height: 1px;
+    width: 75%;
+    margin: 10px auto;
+    
+}
+
+.heading:after {
+    content: " ";
+    display: block;
+    background: #8886ad;
+    background: linear-gradient(143deg, #8886ad 0%, #3e3ed1 48%, #de7ce4 95%);
+    height: 4px;
+    width: 37%;
+    margin: 10px auto 35px auto;
+    border-radius: 25px;
+    
+}
+
+.btn {
+    box-shadow: 5px 5px 8px #b8b8b8c7;
 }

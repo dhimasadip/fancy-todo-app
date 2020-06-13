@@ -1,4 +1,5 @@
 const { Todo, User } = require('../models')
+const axios = require("axios")
 
 class TodoController {
 
@@ -11,7 +12,7 @@ class TodoController {
             }
         })
         .then(data => {
-            res.status(200).json({data: data})
+            return res.status(200).json({data: data})
         })
         .catch(err => {
             next({ str_code: 'INTERNAL_SERVER_ERROR' })
@@ -31,21 +32,32 @@ class TodoController {
 
         Todo.create(todo)
         .then(data => {
-            res.status(201).json({msg: `Successfully create todo`})
+            return res.status(201).json(data)
         })
         .catch(err => {
-            next({ str_code: 'INTERNAL_SERVER_ERROR' })
+            if (err.errors) {
+                const err_data = err.errors.map(el => el.message)
+                next({ str_code: 'TODO_VALIDATION', err_data })
+            } else {
+                next({ str_code: 'INTERNAL_SERVER_ERROR' })
+            }
         })
     }
 
     static edit(req,res,next) {
-        Todo.findByPk(req.params.id)
-        .then(data => {
-            res.status(200).json({data})
-        })
-        .catch(err => {
-            next({ str_code: 'INTERNAL_SERVER_ERROR' })
-        })
+        const { id } = req.params
+
+        Todo.findByPk(id)
+            .then(data => {
+                if(data) {
+                    return res.status(200).json({data})
+                } else {
+                    next({ str_code: 'TODO_NOT_FOUND'})
+                }
+            })
+            .catch(err => {
+                next({ str_code: 'INTERNAL_SERVER_ERROR' })
+            })
     }
 
     static editHandler(req,res,next) {
@@ -56,33 +68,94 @@ class TodoController {
             due_date: new Date(req.body.due_date)
         }
 
+        const { id } = req.params
 
         Todo.update(todo, {
-            where: {
-                id: req.params.id
-            }
+            where: { id }
+        })
+            .then(data => {
+                return res.status(200).json({ msg: `Successfully update todo` })
+            })
+            .catch(err => {
+                if (err.errors) {
+                    const err_data = err.errors.map(el => el.message)
+                    next({ str_code: 'TODO_VALIDATION', err_data })
+                } else {
+                    next({ str_code: 'INTERNAL_SERVER_ERROR' })
+                }
+            })
+    }
+
+    static delete(req,res,next) {
+
+        const { id } = req.params
+
+        Todo.destroy({
+            where: { id }
         })
         .then(data => {
-            res.status(200).json({msg: `Successfully update todo`})
+            return res.status(200).json({msg: `Successfully delete todo`})
         })
         .catch(err => {
             next({ str_code: 'INTERNAL_SERVER_ERROR' })
         })
     }
 
-    static delete(req,res,next) {
 
-        Todo.destroy({
-            where: {
-                id: req.params.id
-            }
+    
+    static notify(req,res,next) {
+        const { id } = req.body
+        
+        Todo.findByPk(id, {
+            include: User
         })
-        .then(data => {
-            res.status(200).json({msg: `Successfully delete todo`})
-        })
-        .catch(err => {
-            next({ str_code: 'INTERNAL_SERVER_ERROR' })
-        })
+            .then(data => {
+                
+                if (data) {
+
+                    return axios({
+                        "method":"POST",
+                        "url":"https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send",
+                        "headers":{
+                            "content-type":"application/json",
+                            "x-rapidapi-host":"rapidprod-sendgrid-v1.p.rapidapi.com",
+                            "x-rapidapi-key":"14c81a20a4mshc1ceafdea64a109p1e678fjsn1a48bb28b089",
+                            "accept":"application/json",
+                            "useQueryString":true
+                        },
+                        "data":{
+                            "personalizations":[{
+                                "to":[{
+                                    "email":`${data.User.email}`
+                                }],
+                                "subject":`[REMINDER] ${data.title}`
+                            }],
+                            "from":{
+                                "email":"fancy_todo@mail.com"
+                                },
+                                "content":[{
+                                    "type":"text/plain",
+                                    "value":`due date : ${data.due_date}\nstatus : ${data.status == 'done' ? 'DONE' : data.status == 'waiting' ? 'WAITING' : 'ON PROCESS'}\ndescription : ${data.description}
+                                    `
+                                }]
+                        }
+                    })
+
+                } else {
+                    return { str_code: 'TODO_NOT_FOUND' }
+                }
+            })
+            .then(response => {
+                
+                if(response.str_code) {
+                    next({ str_code: response.str_code})
+                } else {
+                    res.status(200).json({ msg: 'Successfully notify todo to your email'})
+                }
+            })
+            .catch(err => {
+                next({ str_code: 'INTERNAL_SERVER_ERROR' })
+            })
     }
     
 }

@@ -4,8 +4,12 @@ module.exports = (err,req,res,next) => {
 
     switch (err.str_code) {
         case 'INVALID_TOKEN':
-            err_code = 404
+            err_code = 400
             err_msg = 'Invalid Token'
+            break
+        case 'TOKEN_NOT_FOUND':
+            err_code = 404
+            err_msg = 'Token not found'
             break
         case 'INTERNAL_SERVER_ERROR':
             err_code = 500
@@ -28,8 +32,16 @@ module.exports = (err,req,res,next) => {
             err_msg = 'Email not found'
             break
         case 'INCORRECT_PASSWORD':
-            err_code = 404
+            err_code = 400
             err_msg = 'Incorrect Password'
+            break
+        case 'REGISTRATION_VALIDATION':
+            err_code = 400
+            err_msg = err.err_data
+            break
+        case 'TODO_VALIDATION':
+            err_code = 400
+            err_msg = err.err_data
             break
             
     }

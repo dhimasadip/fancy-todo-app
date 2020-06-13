@@ -8,6 +8,7 @@ router.use(authentication)
 router.get('/list', TodoController.list)
 router.post('/add', TodoController.add) 
 
+router.post('/notify', TodoController.notify)
 router.get('/edit/:id', authorization, TodoController.edit)
 router.put('/edit/:id', authorization, TodoController.editHandler)
 router.delete('/delete/:id', authorization , TodoController.delete)
