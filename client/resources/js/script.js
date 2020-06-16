@@ -11,18 +11,18 @@ const authentication = () => {
     if(localStorage.access_token) {
         $('.section-login').hide()
         $('.section-register').hide()
-        $('.section-list-todo').show()
+        $('.section-list-todo').slideDown(1500)
         $('.section-edit-todo').hide()
         $('.section-add-todo').hide()
-        $('.header').show()
+        $('.header').show(1500)
         fetchTodos()   
     } else {
-        $('.section-login').show()
+        $('.section-login').fadeIn(2000)
         $('.section-register').hide()
-        $('.section-list-todo').hide()
+        $('.section-list-todo').fadeOut(1200)
         $('.section-edit-todo').hide()
         $('.section-add-todo').hide()
-        $('.header').hide()
+        $('.header').hide("slow")
     }
 }
 
@@ -156,6 +156,7 @@ const fetchTodos = () => {
             $('#content').empty()
             data.forEach(el => {
                 const dice = Math.round(Math.random()*3)
+
                 $('#content').append(`
                 <div class="col mb-4">
                     <div class="card shadow rounded">
@@ -329,7 +330,7 @@ const addTodoPage = () => {
     $('.section-register').hide()
     $('.section-list-todo').hide()
     $('.section-edit-todo').hide()
-    $('.section-add-todo').show()
+    $('.section-add-todo').slideDown(800)
     $('.header').show()
 }
 
@@ -385,7 +386,7 @@ const editPage = (id) => {
     $('.section-register').hide()
     $('.section-list-todo').hide()
     $('.section-add-todo').hide()
-    $('.section-edit-todo').show()
+    $('.section-edit-todo').slideDown(800)
     $('.header').show()
 }
 

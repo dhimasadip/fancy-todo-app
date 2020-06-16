@@ -29,6 +29,7 @@ class TodoController {
             createdAt: new Date(),
             updatedAt: new Date()
         }
+        
 
         Todo.create(todo)
         .then(data => {

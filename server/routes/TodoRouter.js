@@ -5,7 +5,7 @@ const authorization = require('../middleware/authorization')
 
 
 router.use(authentication)
-router.get('/list', TodoController.list)
+router.get('/list', TodoController.list) 
 router.post('/add', TodoController.add) 
 
 router.post('/notify', TodoController.notify)
