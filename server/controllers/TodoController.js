@@ -37,7 +37,8 @@ class TodoController {
         })
         .catch(err => {
             if (err.errors) {
-                const err_data = err.errors.map(el => el.message)
+                let err_data = err.errors.map(el => el.message)
+                err_data = err_data.join('. ')
                 next({ str_code: 'TODO_VALIDATION', err_data })
             } else {
                 next({ str_code: 'INTERNAL_SERVER_ERROR' })
@@ -75,11 +76,12 @@ class TodoController {
             where: { id }
         })
             .then(data => {
-                return res.status(200).json({ msg: `Successfully update todo` })
+                return res.status(200).json({ message: `Successfully update todo` })
             })
             .catch(err => {
                 if (err.errors) {
-                    const err_data = err.errors.map(el => el.message)
+                    let err_data = err.errors.map(el => el.message)
+                    err_data = err_data.join('. ')
                     next({ str_code: 'TODO_VALIDATION', err_data })
                 } else {
                     next({ str_code: 'INTERNAL_SERVER_ERROR' })
@@ -95,7 +97,7 @@ class TodoController {
             where: { id }
         })
         .then(data => {
-            return res.status(200).json({msg: `Successfully delete todo`})
+            return res.status(200).json({message: `Successfully delete todo`})
         })
         .catch(err => {
             next({ str_code: 'INTERNAL_SERVER_ERROR' })
@@ -151,7 +153,7 @@ class TodoController {
                 if(response.str_code) {
                     next({ str_code: response.str_code})
                 } else {
-                    res.status(200).json({ msg: 'Successfully notify todo to your email'})
+                    res.status(200).json({ message: 'Successfully notify todo to your email'})
                 }
             })
             .catch(err => {

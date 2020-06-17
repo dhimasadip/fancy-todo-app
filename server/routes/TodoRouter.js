@@ -5,12 +5,12 @@ const authorization = require('../middleware/authorization')
 
 
 router.use(authentication)
-router.get('/list', TodoController.list) 
-router.post('/add', TodoController.add) 
+router.get('/', TodoController.list) 
+router.post('/', TodoController.add) 
 
 router.post('/notify', TodoController.notify)
-router.get('/edit/:id', authorization, TodoController.edit)
-router.put('/edit/:id', authorization, TodoController.editHandler)
-router.delete('/delete/:id', authorization , TodoController.delete)
+router.get('/:id', authorization, TodoController.edit)
+router.put('/:id', authorization, TodoController.editHandler)
+router.delete('/:id', authorization , TodoController.delete)
 
 module.exports = router

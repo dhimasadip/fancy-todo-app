@@ -6,7 +6,7 @@ My Fancy ToDo App is an application to create and manage your todo list. This ap
 &nbsp;
 
 ## RESTful endpoints
-### POST /users/register
+### POST /register
 
 > Register new account
 
@@ -18,49 +18,39 @@ not needed
 _Request Body_
 ```
 {
-    "email": "<your email>"
-    "password": "<your password>"
+    "email": "<user email>"
+    "password": "<user password>"
 }
 ```
 
 _Response (201 - Created)_
 ```
 {
-    "id": 1,
-    "email": "<email>",
+    "id": <user id>,
+    "email": "<user email>",
     "password": "<hash password>",
-    "updatedAt": "2020-06-13T07:03:28.798Z",
-    "createdAt": "2020-06-13T07:03:28.798Z"
+    "createdAt": "<created datetime>",
+    "updatedAt": "<updated datetime>"
 }
 ```
 
 _Response (400 - Bad Request)_
 ```
 {
-    "err_code": 400,
-    "str_code": "REGISTRATION_VALIDATION",
-    "err_msg": [
-        "Wrong email format",
-        "Email can't be empty",
-        "Email already exist",
-        "Password can't be empty",
-        "Password at least 8 characters and maximum 16 characters"
-    ]
+    "message": "<error message>"
 }
 ```
 
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
 
 ---
-### POST /users/login
+### POST /login
 
 > Login 
 
@@ -72,8 +62,8 @@ not needed
 _Request Body_
 ```
 {
-    "email": "<your email>"
-    "password": "<your password>"
+    "email": "<user email>"
+    "password": "<user password>"
 }
 ```
 
@@ -81,7 +71,7 @@ _Response (200 - OK)_
 ```
 {
     "id": <user id>,
-    "email": "<your email>",
+    "email": "<user email>",
     "access_token": "<access token>"
 }
 ```
@@ -89,27 +79,21 @@ _Response (200 - OK)_
 _Response (400 - Bad Request)_
 ```
 {
-    "err_code": 400,
-    "str_code": "INCORRECT_PASSWORD",
-    "err_msg": "Incorrect Password"
+    "message": "<error message>"
 }
 ```
 
 _Response (404 - Not Found)_
 ```
 {
-    "err_code": 404,
-    "str_code": "EMAIL_NOT_FOUND",
-    "err_msg": "Email not found"
+    "message": "<error message>"
 }
 ```
 
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
@@ -134,8 +118,8 @@ _Request Body_
 _Response (200 - OK)_
 ```
 {
-    "id": 1,
-    "email": "<your email>",
+    "id": <user id>,
+    "email": "<user email>",
     "access_token": "<access token>"
 }
 ```
@@ -143,15 +127,13 @@ _Response (200 - OK)_
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
 
 ---
-### GET /todos/list
+### GET /todos
 
 > List todo
 
@@ -202,15 +184,13 @@ _Response (200 - OK)_
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
 
 ---
-### POST /todos/add
+### POST /todos
 
 > Add new todo
 
@@ -247,24 +227,14 @@ _Response (201 - Created)_
 _Response (400 - Bad Request)_
 ```
 {
-    "err_code": 400,
-    "str_code": "TODO_VALIDATION",
-    "err_msg": [
-        "Title can't be empty",
-        "Description can't be empty",
-        "Choose status",
-        "Please select due date",
-        "Due date must be today or after"
-    ]
+    "message": "<error message>"
 }
 ```
 
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
@@ -291,31 +261,27 @@ _Request Body_
 _Response (200 - OK)_
 ```
 {
-    "msg": "Successfully notify todo to your email"
+    "message": "Successfully notify todo to your email"
 }
 ```
 
 _Response (404 - Not Found)_
 ```
 {
-    "err_code": 404,
-    "str_code": "TODO_NOT_FOUND",
-    "err_msg": "Todo not found"
+    "message": "<error message>"
 }
 ```
 
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
 
 ---
-### GET /todos/edit/:id
+### GET /todos/:id
 
 > Get todo data by id
 
@@ -350,24 +316,20 @@ _Response (200 - OK)_
 _Response (404 - Not Found)_
 ```
 {
-    "err_code": 404,
-    "str_code": "TODO_NOT_FOUND",
-    "err_msg": "Todo not found"
+    "message": "<error message>"
 }
 ```
 
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
 
 ---
-### PUT /todos/edit/:id
+### PUT /todos/:id
 
 > Edit todo data by id
 
@@ -391,46 +353,34 @@ _Request Body_
 _Response (200 - OK)_
 ```
 {
-    "msg": "Successfully update todo"
+    "message": "Successfully update todo"
 }
 ```
 
 _Response (400 - Bad Request)_
 ```
 {
-    "err_code": 400,
-    "str_code": "TODO_VALIDATION",
-    "err_msg": [
-        "Title can't be empty",
-        "Description can't be empty",
-        "Choose status",
-        "Please select due date",
-        "Due date must be today or after"
-    ]
+    "message": "<error message>"
 }
 ```
 
 _Response (404 - Not Found)_
 ```
 {
-    "err_code": 404,
-    "str_code": "TODO_NOT_FOUND",
-    "err_msg": "Todo not found"
+    "message": "<error message>"
 }
 ```
 
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```
 
 
 ---
-### DELETE /todos/delete/:id
+### DELETE /todos/:id
 
 > Delete todo from database by id
 
@@ -449,24 +399,20 @@ not needed
 _Response (200 - OK)_
 ```
 {
-    "msg": "Successfully delete todo"
+    "message": "Successfully delete todo"
 }
 ```
 
 _Response (404 - Not Found)_
 ```
 {
-    "err_code": 404,
-    "str_code": "TODO_NOT_FOUND",
-    "err_msg": "Todo not found"
+    "message": "<error message>"
 }
 ```
 
 _Response (500 - Internal Server Error)_
 ```
 {
-    "err_code": 500,
-    "str_code": "INTERNAL_SERVER_ERROR",
-    "err_msg": "Internal server error"
+    "message": "<error message>"
 }
 ```

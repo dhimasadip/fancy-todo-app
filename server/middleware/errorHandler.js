@@ -11,10 +11,6 @@ module.exports = (err,req,res,next) => {
             err_code = 404
             err_msg = 'Token not found'
             break
-        case 'INTERNAL_SERVER_ERROR':
-            err_code = 500
-            err_msg = 'Internal server error'
-            break
         case 'USER_NOT_FOUND':
             err_code = 404
             err_msg = 'User not found'
@@ -43,12 +39,12 @@ module.exports = (err,req,res,next) => {
             err_code = 400
             err_msg = err.err_data
             break
+        case 'INTERNAL_SERVER_ERROR':
+            err_code = 500
+            err_msg = 'Internal server error'
+            break
             
     }
 
-    res.status(err_code).json({
-        err_code,
-        str_code: err.str_code,
-        err_msg
-    })
+    res.status(err_code).json({ message: err_msg })
 }

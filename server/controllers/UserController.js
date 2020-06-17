@@ -68,13 +68,13 @@ class UserController {
         })
         .catch(err => {
             if(err.errors) {
-                const err_data = err.errors.map(el => {
+                let err_data = err.errors.map(el => {
                     if (el.message == 'email must be unique') {
                         return 'Email already exist'
                     }
                     return el.message
                 })
-               
+                err_data = err_data.join('. ')
                 next({ str_code: 'REGISTRATION_VALIDATION', err_data })
             } else {
                 next({ str_code: 'INTERNAL_SERVER_ERROR' })

@@ -33,7 +33,7 @@ const login = (event) => {
     
     $.ajax({
         method: "post",
-        url: `${baseUrl}/users/login`,
+        url: `${baseUrl}/login`,
         data: {email, password}
     })
         .done(data => {
@@ -79,7 +79,7 @@ const register = (event) => {
     if (password == confirm_password) {
         $.ajax({
             method: 'post',
-            url: `${baseUrl}/users/register`,
+            url: `${baseUrl}/register`,
             data: { email, password }
         })
             .done(() => {
@@ -133,7 +133,7 @@ const register = (event) => {
 const fetchTodos = () => {
     $.ajax({
         method: "get",
-        url: `${baseUrl}/todos/list`,
+        url: `${baseUrl}/todos`,
         headers: {
             access_token: localStorage.access_token
         }
@@ -211,7 +211,7 @@ const editTodo = (event) => {
 
     $.ajax({
         method: "put",
-        url: `${baseUrl}/todos/edit/${currentTodoId}`,
+        url: `${baseUrl}/todos/${currentTodoId}`,
         headers: {
             access_token: localStorage.access_token
         },
@@ -264,7 +264,7 @@ const destroyModal = (id) => {
 const destroy = (id) => {
     $.ajax({
         method: 'delete',
-        url: `${baseUrl}/todos/delete/${id}`,
+        url: `${baseUrl}/todos/${id}`,
         headers: {
             access_token: localStorage.access_token
         }
@@ -296,7 +296,7 @@ const addTodo = (event) => {
 
     $.ajax({
         method: 'post',
-        url: `${baseUrl}/todos/add`,
+        url: `${baseUrl}/todos`,
         headers: {
             access_token: localStorage.access_token
         },
@@ -356,7 +356,7 @@ const editPage = (id) => {
     currentTodoId = id
     $.ajax({
         method: 'get',
-        url: `${baseUrl}/todos/edit/${id}`,
+        url: `${baseUrl}/todos/${id}`,
         headers: {
             access_token: localStorage.access_token
         }
