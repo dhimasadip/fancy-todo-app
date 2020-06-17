@@ -28,7 +28,6 @@ _Response (201 - Created)_
 {
     "id": <user id>,
     "email": "<user email>",
-    "password": "<hash password>",
     "createdAt": "<created datetime>",
     "updatedAt": "<updated datetime>"
 }

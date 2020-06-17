@@ -64,6 +64,7 @@ class UserController {
 
         User.create(user)
         .then(data => {
+            delete data.dataValues.password
             res.status(201).json(data)
         })
         .catch(err => {
