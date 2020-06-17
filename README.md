@@ -111,7 +111,7 @@ not needed
 _Request Body_
 ```
 {
-    "email": "<your google email>"
+    "id_token": "<token>"
 }
 ```
 
